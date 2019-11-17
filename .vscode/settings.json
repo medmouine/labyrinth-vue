@@ -5,6 +5,7 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "prettier.singleQuote": true,
+  "vetur.format.defaultFormatter.html": "prettier",
   "vetur.format.defaultFormatterOptions": {
     "prettier": {
       "singleQuote": true
