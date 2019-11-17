@@ -4,5 +4,10 @@
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
-  "prettier.singleQuote": true
+  "prettier.singleQuote": true,
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "singleQuote": true
+    }
+  }
 }
