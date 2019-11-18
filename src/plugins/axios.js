@@ -2,7 +2,9 @@
 
 import Vue from 'vue';
 import axios from 'axios';
-import { getToken } from '../authentication/authTokenTools';
+import router from '../router';
+import httpStatus from 'http-status-codes';
+import { getToken, clearToken } from '../authentication/authTokenTools';
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
@@ -40,6 +42,14 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+    if (
+      error &&
+      error.response &&
+      error.response.status == httpStatus.UNAUTHORIZED
+    ) {
+      clearToken();
+      router.push({ name: 'signin' });
+    }
     return Promise.reject(error);
   }
 );
