@@ -8,7 +8,10 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/about',
@@ -17,7 +20,16 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue')
+      import(/* webpackChunkName: "about" */ '../views/About.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/Signin.vue')
   }
 ];
 
@@ -25,6 +37,20 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, _, next) => {
+  if (
+    to.matched.some(record => record.meta.requiresAuth) &&
+    localStorage.getItem('accessToken') == null
+  ) {
+    next({
+      name: 'signin',
+      query: { redirect: to.fullPath }
+    });
+  } else {
+    next();
+  }
 });
 
 export default router;
