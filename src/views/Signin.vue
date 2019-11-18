@@ -36,10 +36,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['signingIn', 'signinErrors'])
+    ...mapGetters('authentication', ['signingIn', 'signinErrors'])
   },
   methods: {
-    ...mapActions(['signIn']),
+    ...mapActions('authentication', ['signIn']),
     signinFormSubmit() {
       this.signIn({
         email: this.email,
