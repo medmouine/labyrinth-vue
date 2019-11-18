@@ -31,13 +31,14 @@ export default {
     }
   },
   actions: {
-    signIn({ commit }, signinData) {
+    signIn({ commit, dispatch }, signinData) {
       commit('signinStart');
       const promise = labyrinthApi.signIn({ ...signinData });
       promise
         .then(response => {
           setToken(response.data.token);
           commit('signinStop', null);
+          dispatch('user/fetchCurrentUser', {}, { root: true });
         })
         .catch(error => {
           commit('signinStop', error.response.data);
