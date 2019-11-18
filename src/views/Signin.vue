@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="logo">
-      <img alt="Dialog Insight" src="../assets/DialogInsight_Logo.png" />
+      <img
+        alt="Dialog Insight"
+        src="../assets/DialogInsight_Logo_hackathon.png"
+      />
     </div>
     <div class="signin">
       <div v-if="signingIn" class="container-loading">
@@ -60,7 +63,7 @@ export default {
   margin-top: 3.75rem;
 }
 .logo {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   img {
     max-height: 3.75rem;
   }
