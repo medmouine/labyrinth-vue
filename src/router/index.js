@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import Lost from '../views/Lost.vue';
 import { hasToken } from '../authentication/authTokenTools';
 
 Vue.use(VueRouter);
@@ -19,6 +20,11 @@ const routes = [
     name: 'signin',
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/Signin.vue')
+  },
+  {
+    path: '*',
+    name: 'lost',
+    component: Lost
   }
 ];
 
