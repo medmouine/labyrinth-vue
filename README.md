@@ -36,6 +36,10 @@ npm install
 ```
 npm run serve
 ```
+### To lint and fix files style
+```
+npm run lint
+```
 ### To compile and minify for production
 ```
 npm run build
