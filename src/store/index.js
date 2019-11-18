@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import axios from 'axios';
 import { setToken, clearToken } from '../authentication/authTokenTools';
+import labyrinthApi from '../api/labyrinthApi';
 
 Vue.use(Vuex);
 
@@ -35,14 +35,7 @@ export default new Vuex.Store({
   actions: {
     signIn({ commit }, signinData) {
       commit('signinStart');
-
-      const promise = axios.post(
-        'https://labyrinth-api.herokuapp.com/api/users/signin',
-        {
-          ...signinData
-        }
-      );
-
+      const promise = labyrinthApi.signIn({ ...signinData });
       promise
         .then(response => {
           setToken(response.data.token);
@@ -51,7 +44,6 @@ export default new Vuex.Store({
         .catch(error => {
           commit('signinStop', error.response.data);
         });
-
       return promise;
     },
     signOut() {
