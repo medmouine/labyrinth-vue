@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { setToken, clearToken } from '../authentication/authTokenTools';
 
 Vue.use(Vuex);
 
@@ -44,7 +45,7 @@ export default new Vuex.Store({
 
       promise
         .then(response => {
-          localStorage.setItem('accessToken', response.data.token);
+          setToken(response.data.token);
           commit('signinStop', null);
         })
         .catch(error => {
@@ -54,7 +55,7 @@ export default new Vuex.Store({
       return promise;
     },
     signOut() {
-      localStorage.removeItem('accessToken');
+      clearToken();
     }
   },
   modules: {}

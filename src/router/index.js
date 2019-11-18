@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Home from '../views/Home.vue';
+import { hasToken } from '../authentication/authTokenTools';
 
 Vue.use(VueRouter);
 
@@ -28,10 +29,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, _, next) => {
-  if (
-    to.matched.some(record => record.meta.requiresAuth) &&
-    localStorage.getItem('accessToken') == null
-  ) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !hasToken()) {
     next({
       name: 'signin',
       query: { redirect: to.fullPath }
