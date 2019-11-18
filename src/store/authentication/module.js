@@ -46,7 +46,11 @@ export default {
       return promise;
     },
     signOut() {
-      clearToken();
+      const promise = new Promise((resolve, _) => {
+        clearToken();
+        resolve();
+      });
+      return promise;
     }
   }
 };
