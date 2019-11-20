@@ -19,10 +19,6 @@
         <input type="email" placeholder="email" v-model="email" />
         <input type="password" placeholder="password" v-model="password" />
         <button class="btn-signin" type="submit">Sign in</button>
-        <div>or</div>
-        <button class="btn-signup" @click="redirectToSignup">
-          Sign up
-        </button>
       </form>
     </div>
   </div>
@@ -50,9 +46,6 @@ export default {
       }).then(_ => {
         this.$router.push(this.$route.query.redirect || '/');
       });
-    },
-    redirectToSignup() {
-      this.$router.push('/signup');
     }
   }
 };
@@ -116,15 +109,6 @@ export default {
       background-color: #2c997a;
       &:hover {
         background-color: #56ad95;
-      }
-    }
-    button.btn-signup {
-      color: #2c997a;
-      background-color: white;
-      border-color: #2c997a;
-      &:hover {
-        background-color: #2c997a;
-        color: white;
       }
     }
   }
