@@ -30,8 +30,7 @@ export default {
           const user = response.data;
           commit('setUser', { ...defaultUser, ...user });
         })
-        .catch(error => {
-          console.error(error);
+        .catch(_ => {
           commit('setUser', { ...defaultUser });
         });
       return fetchUser;
