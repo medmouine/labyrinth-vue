@@ -1,8 +1,7 @@
 <template>
-  <p>allo</p>
 </template>
 <script>
-import DIRECTIONS from '@/models/directions';
+import DIRECTIONS from '@/model/game/directions';
 
 export default {
   name: 'KeyBoardDirectionListener',

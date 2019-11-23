@@ -13,7 +13,7 @@ export default {
     this.fetchCurrentUser();
   },
   methods: {
-    ...mapActions('user', ['fetchCurrentUser'])
+    ...mapActions('user', ['fetchCurrentUser']),
   }
 };
 </script>

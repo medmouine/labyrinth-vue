@@ -26,10 +26,10 @@ const Grid = class {
       const {row, column} = cell;
       if (row === 0 && column === 0) cell.isEntry = true;
       if (row === this.rows - 1 && column === this.columns - 1) cell.isEnd = true;
-      cell.north = this.getGrid(row - 1, column);
-      cell.south = this.getGrid(row + 1, column);
-      cell.west = this.getGrid(row, column - 1);
-      cell.east = this.getGrid(row, column + 1)
+      cell.north = this.getCell(row - 1, column);
+      cell.south = this.getCell(row + 1, column);
+      cell.west = this.getCell(row, column - 1);
+      cell.east = this.getCell(row, column + 1)
     })
   }
 
@@ -47,7 +47,7 @@ const Grid = class {
     }
   }
 
-  getGrid(row, column) {
+  getCell(row, column) {
     if (row < 0 || row >= this.rows) {
       return undefined
     }

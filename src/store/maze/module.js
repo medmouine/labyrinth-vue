@@ -3,39 +3,6 @@ import {generateMaze} from "./mazeGenerator";
 const initialState = {
   maze: undefined,
   isLoaded: false,
-  players: [
-    {
-      id: 1,
-      isLoggedIn: false,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 2,
-      isLoggedIn: false,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 3,
-      isLoggedIn: false,
-      position: {
-        x: 0,
-        y: 0
-      }
-    },
-    {
-      id: 4,
-      isLoggedIn: false,
-      position: {
-        x: 0,
-        y: 0
-      }
-    }]
 };
 
 export default {
@@ -44,8 +11,6 @@ export default {
   getters: {
     maze: state => state.maze,
     mazeIsLoaded: state => state.isLoaded,
-    players: state => state.players,
-    numberOfPlayers: state => state.players.filter((p) => p.isLoggedIn).length
   },
   mutations: {
     updatePlayerPosition: (state, playerId, newPosition) =>
