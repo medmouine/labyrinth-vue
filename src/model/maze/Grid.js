@@ -47,7 +47,7 @@ const Grid = class {
     }
   }
 
-  getGrid(row, column) {
+  getCell(row, column) {
     if (row < 0 || row >= this.rows) {
       return undefined
     }
