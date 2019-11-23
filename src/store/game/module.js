@@ -1,18 +1,17 @@
 import GameStatus from "../../model/game/GameStatus";
 import db from "../../database/db";
-import { vuexfireMutations, firestoreAction } from 'vuexfire'
 
 const initialState = {
-  winner : {},
+  winner: {},
   status: GameStatus.IDLE,
   players: [
     {
-      isCurrentPlayer: true,
+      isCurrentPlayer: false,
       id: 0,
       isLoggedIn: true,
       position: {
-        x: 0,
-        y: 0
+        x: -1,
+        y: -1
       },
       avatar: ''
     },
@@ -21,8 +20,8 @@ const initialState = {
       id: 1,
       isLoggedIn: false,
       position: {
-        x: 0,
-        y: 0
+        x: -1,
+        y: -1
       },
       avatar: ''
     },
@@ -31,8 +30,8 @@ const initialState = {
       id: 2,
       isLoggedIn: false,
       position: {
-        x: 0,
-        y: 0
+        x: -1,
+        y: -1
       },
       avatar: ''
     },
@@ -41,8 +40,8 @@ const initialState = {
       id: 3,
       isLoggedIn: false,
       position: {
-        x: 0,
-        y: 0
+        x: -1,
+        y: -1
       },
       avatar: ''
     }]
@@ -61,24 +60,38 @@ export default {
   },
   mutations: {
     updatePlayerPosition: (state, {playerId, newPosition}) =>
-        (state.players[playerId].position = newPosition || console.log(state)),
+        (state.players[playerId].position = newPosition),
     updateGameStatus: (state, newStatus) =>
         (state.status = newStatus),
-    updateWinner: (state, player)  =>
+    updateWinner: (state, player) =>
         (state.winner = player),
   },
   actions: {
     async move({commit, getters, _, rootGetters}, {playerId, direction}) {
       const maze = rootGetters['maze/maze'];
-      const currentPosition = getters.players.find(p => p.id === playerId).position;
+      const currentPosition = getters.players.find(p => p.id == playerId).position;
       const nextCell = maze.getCell(currentPosition.x + direction.x, currentPosition.y + direction.y);
       const currentCell = maze.getCell(currentPosition.x, currentPosition.y);
       if (!!nextCell && currentCell.isLinked(nextCell)) {
         commit('updatePlayerPosition', {playerId, newPosition: {x: nextCell.row, y: nextCell.column}});
         await db.collection('players')
             .doc('player' + playerId)
-            .set({ id: playerId, isLoggedIn: true, position: {x: nextCell.row, y: nextCell.column} });
+            .set({id: playerId, isLoggedIn: true, position: {x: nextCell.row, y: nextCell.column}});
       }
+    },
+    async startGame({commit, getters}) {
+      await getters.players
+          .filter( p => p.isLoggedIn)
+          .forEach(async (p) => {
+            commit('updatePlayerPosition', {playerId: p.id, newPosition: {x: 0, y: 0}});
+            commit('updateGameStatus', GameStatus.STARTED);
+            await db.collection('players')
+                .doc('player' + p.id)
+                .set({id: p.id, isLoggedIn: true, position: {x: 0, y: 0}, ...p});
+            await db.collection('game')
+                .doc('game')
+                .set({status: GameStatus.STARTED});
+          });
     }
   }
 };

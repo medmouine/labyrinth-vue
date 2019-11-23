@@ -1,5 +1,9 @@
 <template>
+<<<<<<< HEAD
   <span></span>
+=======
+  <div></div>
+>>>>>>> 5051bcea9cb4d9d2947efa613620e67a0633818e
 </template>
 <script>
 import DIRECTIONS from '@/model/game/directions';
