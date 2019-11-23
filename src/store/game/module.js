@@ -1,4 +1,6 @@
 import GameStatus from "../../model/game/GameStatus";
+import db from "../../database/db";
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
 
 const initialState = {
   winner : {},
@@ -11,7 +13,8 @@ const initialState = {
       position: {
         x: 0,
         y: 0
-      }
+      },
+      avatar: ''
     },
     {
       isCurrentPlayer: false,
@@ -20,7 +23,8 @@ const initialState = {
       position: {
         x: 0,
         y: 0
-      }
+      },
+      avatar: ''
     },
     {
       isCurrentPlayer: false,
@@ -29,7 +33,8 @@ const initialState = {
       position: {
         x: 0,
         y: 0
-      }
+      },
+      avatar: ''
     },
     {
       isCurrentPlayer: false,
@@ -38,7 +43,8 @@ const initialState = {
       position: {
         x: 0,
         y: 0
-      }
+      },
+      avatar: ''
     }]
 };
 
@@ -59,16 +65,19 @@ export default {
     updateGameStatus: (state, newStatus) =>
         (state.status = newStatus),
     updateWinner: (state, player)  =>
-        state.winner = player
+        (state.winner = player),
   },
   actions: {
-    move({commit, getters, _, rootGetters}, {playerId, direction}) {
+    async move({commit, getters, _, rootGetters}, {playerId, direction}) {
       const maze = rootGetters['maze/maze'];
       const currentPosition = getters.players.find(p => p.id === playerId).position;
       const nextCell = maze.getCell(currentPosition.x + direction.x, currentPosition.y + direction.y);
       const currentCell = maze.getCell(currentPosition.x, currentPosition.y);
       if (!!nextCell && currentCell.isLinked(nextCell)) {
         commit('updatePlayerPosition', {playerId, newPosition: {x: nextCell.row, y: nextCell.column}});
+        await db.collection('players')
+            .doc('player' + playerId)
+            .set({ id: playerId, isLoggedIn: true, position: {x: nextCell.row, y: nextCell.column} });
       }
     }
   }
