@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import firebase from 'firebase/app';
-import 'firebase/database';
-import { rtdbPlugin } from 'vuefire';
+import 'firebase/firestore'
+import { firestorePlugin } from 'vuefire';
 
-Vue.use(rtdbPlugin);
+Vue.use(firestorePlugin);
 
 export default firebase
   .initializeApp({
-    databaseURL: 'https://labyrithe-di.firebaseio.com/'
+    projectId: 'labyrithe-di'
   })
-  .database();
+  .firestore();

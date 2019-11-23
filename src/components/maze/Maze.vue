@@ -1,7 +1,8 @@
 <template>
   <div id="maze">
     <div v-if="this.mazeIsLoaded" id="maze-wrapper">
-      <KeyBoardDirectionListener v-bind:on-direction-press="(direction) => this.move({playerId: currentPlayer.id, direction: direction})"/>
+      <KeyBoardDirectionListener
+              v-bind:on-direction-press="(direction) => this.move({playerId: this.currentPlayer.id, direction: direction})"/>
       <div v-bind:key="row.index" class="row" v-for="row in maze.grid">
         <div
                 class="cell"
@@ -17,7 +18,9 @@
         >
           <div class="player-container">
             <img
-                    v-if="players[0].isLoggedIn
+                    v-if="
+                    !!players.length
+                     && players[0].isLoggedIn
                     && players[0].position.x === cell.row
                     && players[0].position.y === cell.column"
                     v-bind:class="{
@@ -25,25 +28,29 @@
             moreThanOnePlayer: countPlayersInCell(cell, players) !== 1}"
                     src="https://cdn4.iconfinder.com/data/icons/reaction/32/angry-512.png">
             <img
-                    v-if="players[1].isLoggedIn
-                    && players[1].position.x === cell.row
-                    && players[1].position.y === cell.column"
+                    v-if="
+                                        !!players.length &&
+                                        players[1].isLoggedIn
+            && players[1].position.x === cell.row
+            && players[1].position.y === cell.column"
                     v-bind:class="{
             onePlayer: countPlayersInCell(cell, players) === 1,
             moreThanOnePlayer: countPlayersInCell(cell, players) !== 1}"
                     src="https://clipart.info/images/ccovers/1499793243facebook-wow-emoji-like-png.png">
             <img
-                    v-if="players[2].isLoggedIn
-                    && players[2].position.x === cell.row
-                    && players[2].position.y === cell.column"
+                    v-if="!!players.length
+                            && players[2].isLoggedIn
+                            && players[2].position.x === cell.row
+                            && players[2].position.y === cell.column"
                     v-bind:class="{
             onePlayer: countPlayersInCell(cell, players) === 1,
             moreThanOnePlayer: countPlayersInCell(cell, players) !== 1}"
                     src="https://clipart.info/images/ccovers/1499793247facebook-sad-emoji-like-png.png">
             <img
-                    v-if="players[3].isLoggedIn
-                    && players[3].position.x === cell.row
-                    && players[3].position.y === cell.column"
+                    v-if="!!players.length
+                            && players[3].isLoggedIn
+            && players[3].position.x === cell.row
+            && players[3].position.y === cell.column"
                     v-bind:class="{
             onePlayer: countPlayersInCell(cell, players) === 1,
             moreThanOnePlayer: countPlayersInCell(cell, players) !== 1}"
@@ -58,23 +65,34 @@
 <script>
   import {mapActions, mapGetters} from 'vuex';
   import KeyBoardDirectionListener from "../KeyBoardDirectionListener";
+  import db from '../../database/db';
 
   export default {
     name: 'Maze',
-    components: {KeyBoardDirectionListener},
+    components: {
+      KeyBoardDirectionListener
+    },
+    data: () => ({
+      players: []
+    }),
+
+    firestore: {
+      players: db.collection('players'),
+    },
     computed: {
       ...mapGetters('maze', ['maze', 'mazeIsLoaded']),
-      ...mapGetters('game', ['players', 'numberOfPlayers', 'currentPlayer'])
+      ...mapGetters('game', ['numberOfPlayers', 'currentPlayer'])
     },
     methods: {
       ...mapActions('maze', ['initMaze']),
       ...mapActions('game', ['move']),
       countPlayersInCell(cell, allPlayers) {
-        return allPlayers.filter( p => p.position.x === cell.row && p.position.y === cell.column).length
+        return allPlayers.filter(p => p.position.x === cell.row && p.position.y === cell.column).length
       },
     },
     async created() {
       this.initMaze();
+      console.log(this.players)
     }
   };
 </script>
