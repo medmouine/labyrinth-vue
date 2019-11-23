@@ -16,7 +16,8 @@
       </div>
     </div>
     <div class="buttons">
-      <button class="begin">Commencer</button>
+      <button :disabled="players.filter( p => !!p.username && p.username !== '').length > 1" class="begin">Commencer</button>
+      <p v-if="players.filter( p => !!p.username && p.username !== '').length <= 1">Two or more players need to be connected and set a username to start</p>
       <select class="select">
         <option value="beginner">Débutant</option>
         <option value="advanced">Avancé</option>

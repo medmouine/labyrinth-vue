@@ -13,7 +13,7 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: '',
+      avatar: 'https://cdn4.iconfinder.com/data/icons/reaction/32/angry-512.png',
       username: '',
     },
     {
@@ -24,7 +24,7 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: '',
+      avatar: 'https://clipart.info/images/ccovers/1499793243facebook-wow-emoji-like-png.png',
       username: '',
     },
     {
@@ -35,7 +35,7 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: '',
+      avatar: 'https://clipart.info/images/ccovers/1499793247facebook-sad-emoji-like-png.png',
       username: '',
     },
     {
@@ -46,7 +46,7 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: '',
+      avatar: 'https://c7.uihere.com/files/707/881/246/facebook-like-button-facebook-like-button-clip-art-facebook-reaction.jpg',
       username: '',
     }]
 };
@@ -69,6 +69,8 @@ export default {
         (state.status = newStatus),
     setWinner: (state, player) =>
         (state.winner = player),
+    updateUsername: (state, {playerId, newUsername}) =>
+        (state.players[playerId].username = newUsername)
   },
   actions: {
     async move({commit, getters, dispatch, rootGetters}, {playerId, direction}) {
@@ -108,6 +110,13 @@ export default {
           .doc('game')
           .set({status: GameStatus.ENDED, winner: winner});
       console.log('WINNER IS ', winner);
-    }
+    },
+    async setUsername({commit, getters}, {playerId, newUsername}) {
+      const player = getters.players.find(p => p.id == playerId);
+      commit('updateUsername', {playerId, newUsername});
+      await db.collection('players')
+          .doc('player' + playerId)
+          .set({username: newUsername, ...player});
+    },
   }
 };
