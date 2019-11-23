@@ -2,7 +2,7 @@
   <div id="maze">
     <div v-if="this.mazeIsLoaded" id="maze-wrapper">
       <KeyBoardDirectionListener
-              v-bind:on-direction-press="(direction) => this.move({playerId: this.currentPlayer.id, direction: direction})"/>
+              v-bind:on-direction-press="(direction) => this.move({playerId: this.currentPlayer, direction: direction})"/>
       <div v-bind:key="row.index" class="row" v-for="row in maze.grid">
         <div
                 class="cell"
@@ -55,6 +55,7 @@
             onePlayer: countPlayersInCell(cell, players) === 1,
             moreThanOnePlayer: countPlayersInCell(cell, players) !== 1}"
                     src="https://c7.uihere.com/files/707/881/246/facebook-like-button-facebook-like-button-clip-art-facebook-reaction.jpg">
+
           </div>
         </div>
       </div>
@@ -81,19 +82,19 @@
     },
     computed: {
       ...mapGetters('maze', ['maze', 'mazeIsLoaded']),
-      ...mapGetters('game', ['numberOfPlayers', 'currentPlayer'])
+      ...mapGetters('game', ['numberOfPlayers']),
+      currentPlayer() { return localStorage.getItem('currentPlayerId')}
     },
     methods: {
       ...mapActions('maze', ['initMaze']),
-      ...mapActions('game', ['move']),
+      ...mapActions('game', ['move', 'startGame']),
       countPlayersInCell(cell, allPlayers) {
         return allPlayers.filter(p => p.position.x === cell.row && p.position.y === cell.column).length
       },
     },
     async created() {
       this.initMaze();
-
-      console.log(this.players)
+      this.startGame();
     }
   };
 </script>
