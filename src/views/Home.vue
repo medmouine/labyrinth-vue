@@ -6,7 +6,7 @@
     </div>
 
     <div class="users">
-      <div v-for="(player, index) of players" v-bind:key="index">
+      <div v-for="(player, index) of playersDb" v-bind:key="index">
         <LobbyPlayer
           v-bind:player="player"
           v-bind:isCurrent="isCurrentPlayer(player)"
@@ -47,10 +47,10 @@ export default {
     LobbyPlayer
   },
   data: () => ({
-    players: []
+    playersDb: []
   }),
   firestore: {
-    players: db.collection('players')
+    playersDb: db.collection('players')
   },
   methods: {
     isCurrentPlayer: player => {
