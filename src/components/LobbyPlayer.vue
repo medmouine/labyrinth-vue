@@ -1,23 +1,23 @@
 <template>
-  <div class="user">
+  <div class="user" v-bind:class="{ current: isCurrent }">
     <img v-bind:src="player.avatar" class="avatar" />
-    <input v-if="isCurrent" v-bind:value="player.username" class="input"/>
-    <big v-else>Joueur {{ player.id + 1 }}</big>
+    <input v-if="isCurrent" v-bind:value="player.username" class="input" />
+    <big v-else>{{ player.username }}</big>
     <IsReady v-bind:isReady="player.isLoggedIn" class="isReady" />
   </div>
 </template>
 <script>
-import IsReady from '@/components/IsReady'
+import IsReady from '@/components/IsReady';
 export default {
-  name: "LobbyPlayer",
+  name: 'LobbyPlayer',
   props: {
     player: Object,
     isCurrent: Boolean
   },
-  components: { 
+  components: {
     IsReady
-   }
-}
+  }
+};
 </script>
 <style>
 .user {
@@ -26,7 +26,7 @@ export default {
   align-items: center;
   width: 200px;
   margin-bottom: 8px;
-  pa
+  padding: 8px;
 }
 .avatar {
   width: 128px;
@@ -34,5 +34,8 @@ export default {
 }
 .isReady {
   margin-top: 8px;
+}
+.current {
+  box-shadow: 0 0 8px 8px lavender;
 }
 </style>
