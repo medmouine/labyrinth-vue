@@ -47,6 +47,11 @@ export default {
   width: 100vw;
 }
 
+.header {
+  background-color: #fb3;
+  color: white;
+}
+
 .users {
   display: flex;
   justify-content: center;
