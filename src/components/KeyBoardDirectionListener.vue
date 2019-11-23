@@ -10,7 +10,7 @@ export default {
     onDirectionPress: { type: Function }
   },
   mounted() {
-    window.addEventListener('keypress', e => {
+    window.addEventListener('keydown', e => {
       switch (e.code) {
         case 'ArrowLeft':
           this.onDirectionPress(DIRECTIONS.LEFT);
