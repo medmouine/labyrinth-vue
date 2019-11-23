@@ -13,7 +13,8 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: ''
+      avatar: '',
+      username: '',
     },
     {
       isCurrentPlayer: false,
@@ -23,7 +24,8 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: ''
+      avatar: '',
+      username: '',
     },
     {
       isCurrentPlayer: false,
@@ -33,7 +35,8 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: ''
+      avatar: '',
+      username: '',
     },
     {
       isCurrentPlayer: false,
@@ -43,7 +46,8 @@ const initialState = {
         x: -1,
         y: -1
       },
-      avatar: ''
+      avatar: '',
+      username: '',
     }]
 };
 
@@ -63,11 +67,11 @@ export default {
         (state.players[playerId].position = newPosition),
     updateGameStatus: (state, newStatus) =>
         (state.status = newStatus),
-    updateWinner: (state, player) =>
+    setWinner: (state, player) =>
         (state.winner = player),
   },
   actions: {
-    async move({commit, getters, _, rootGetters}, {playerId, direction}) {
+    async move({commit, getters, dispatch, rootGetters}, {playerId, direction}) {
       const maze = rootGetters['maze/maze'];
       const currentPosition = getters.players.find(p => p.id == playerId).position;
       const nextCell = maze.getCell(currentPosition.x + direction.x, currentPosition.y + direction.y);
@@ -77,11 +81,14 @@ export default {
         await db.collection('players')
             .doc('player' + playerId)
             .set({id: playerId, isLoggedIn: true, position: {x: nextCell.row, y: nextCell.column}});
+        if (nextCell.row === maze.rows - 1 && nextCell.column === maze.columns - 1 ) {
+          dispatch('endGame', playerId);
+        }
       }
     },
     async startGame({commit, getters}) {
       await getters.players
-          .filter( p => p.isLoggedIn)
+          .filter(p => p.isLoggedIn)
           .forEach(async (p) => {
             commit('updatePlayerPosition', {playerId: p.id, newPosition: {x: 0, y: 0}});
             commit('updateGameStatus', GameStatus.STARTED);
@@ -92,6 +99,15 @@ export default {
                 .doc('game')
                 .set({status: GameStatus.STARTED});
           });
+    },
+    async endGame({commit, getters}, winnerId) {
+      const winner = getters.players.find(p => p.id == winnerId);
+      commit('updateGameStatus', GameStatus.ENDED);
+      commit('setWinner', winner);
+      await db.collection('game')
+          .doc('game')
+          .set({status: GameStatus.ENDED, winner: winner});
+      console.log('WINNER IS ', winner);
     }
   }
 };
