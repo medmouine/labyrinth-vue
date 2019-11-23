@@ -17,6 +17,8 @@
 
 <script>
 import IsReady from '@/components/IsReady';
+import db from '@/database/db';
+
 // we can also use `$firebaseRefs.user` to refer to the bound user reference
 //this.$firebaseRefs.user.set(user)
 export default {
@@ -29,13 +31,11 @@ export default {
       'https://clipart.info/images/ccovers/1499793247facebook-sad-emoji-like-png.png',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAMHO5MPBu6ztKy20_DfCT6fMTtZFZ2MfO0AuhumDliiYPUXUE&s'
     ],
-    players: [
-      { id: 0, isLoggedIn: false, username: undefined },
-      { id: 1, isLoggedIn: true, username: undefined },
-      { id: 2, isLoggedIn: true, username: undefined },
-      { id: 3, isLoggedIn: false, username: undefined }
-    ]
-  })
+    players: []
+  }),
+  firestore: {
+    players: db.collection('players')
+  }
 };
 </script>
 
