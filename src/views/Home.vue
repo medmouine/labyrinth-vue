@@ -38,6 +38,23 @@ export default {
   }),
   firestore: {
     players: db.collection('players')
+  },
+  mounted: async () => {
+    if (!localStorage.getItem('currentPlayerId')) {
+      const querySnapshot = await db.collection('players').get();
+      const currentPlayer = querySnapshot.docs
+        .find(p => !p.data().isLoggedIn)
+        .data();
+      const currentPlayerId = currentPlayer.id;
+
+      console.log(currentPlayer, { ...currentPlayer, isLoggedIn: true });
+
+      db.collection('players')
+        .doc(`player${currentPlayerId}`)
+        .set({ ...currentPlayer, isLoggedIn: true });
+
+      localStorage.setItem('currentPlayerId', currentPlayerId);
+    }
   }
 };
 </script>
@@ -80,10 +97,10 @@ export default {
   box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
   transition: all 0.4s ease 0s;
 }
-.buttons{
+.buttons {
   margin-top: 32px;
 }
-.select{
+.select {
   color: #fff;
   text-decoration: none;
   background: #fb3;
