@@ -1,13 +1,17 @@
 <template>
   <div class="user" v-bind:class="{ current: isCurrent }">
     <img v-bind:src="player.avatar" class="avatar" />
-    <input v-if="isCurrent" v-bind:value="player.username" class="input" />
+    <div  v-if="isCurrent">
+      <input v-bind:value="player.username" class="input" v-on:change="(e) => this.handleChange(e.target.value)"/>
+      <p>Press enter to save username</p>
+    </div>
     <big v-else>{{ player.username }}</big>
     <IsReady v-bind:isReady="player.isLoggedIn" class="isReady" />
   </div>
 </template>
 <script>
 import IsReady from '@/components/IsReady';
+import {mapActions} from "vuex";
 export default {
   name: 'LobbyPlayer',
   props: {
@@ -16,6 +20,12 @@ export default {
   },
   components: {
     IsReady
+  },
+  methods: {
+    ...mapActions('game', ['setUsername']),
+    handleChange(value) {
+      this.setUsername({playerId: localStorage.getItem('currentPlayerId'), newUsername: value});
+    }
   }
 };
 </script>
