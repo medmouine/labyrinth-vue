@@ -6,34 +6,27 @@
     </div>
 
     <div class="users">
-      <div v-for="(player, index) of players" v-bind:key="index" class="user">
-        <img v-bind:src="images[index]" class="avatar" />
-        <big>Joueur {{ player.id + 1 }}</big>
-        <IsReady v-bind:isReady="player.isLoggedIn" />
+      <div v-for="(player, index) of players" v-bind:key="index">
+        <LobbyPlayer v-if="index===0" v-bind:player="player" v-bind:isCurrent="true" />
+        <LobbyPlayer v-else v-bind:player="player" v-bind:isCurrent="false" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import IsReady from '@/components/IsReady';
-// we can also use `$firebaseRefs.user` to refer to the bound user reference
-//this.$firebaseRefs.user.set(user)
+import LobbyPlayer from '@/components/LobbyPlayer'
 export default {
   name: 'Home',
-  components: { IsReady },
+  components: {
+    LobbyPlayer
+  },
   data: () => ({
-    images: [
-      'https://cdn4.iconfinder.com/data/icons/reaction/32/angry-512.png',
-      'https://clipart.info/images/ccovers/1499793243facebook-wow-emoji-like-png.png',
-      'https://clipart.info/images/ccovers/1499793247facebook-sad-emoji-like-png.png',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAMHO5MPBu6ztKy20_DfCT6fMTtZFZ2MfO0AuhumDliiYPUXUE&s'
-    ],
     players: [
-      { id: 0, isLoggedIn: false, username: undefined },
-      { id: 1, isLoggedIn: true, username: undefined },
-      { id: 2, isLoggedIn: true, username: undefined },
-      { id: 3, isLoggedIn: false, username: undefined }
+      { id: 0, isLoggedIn: false, username: 'henlo', avatar: 'https://cdn4.iconfinder.com/data/icons/reaction/32/angry-512.png'},
+      { id: 1, isLoggedIn: true, username: undefined, avatar: 'https://clipart.info/images/ccovers/1499793243facebook-wow-emoji-like-png.png'},
+      { id: 2, isLoggedIn: true, username: undefined, avatar: 'https://clipart.info/images/ccovers/1499793247facebook-sad-emoji-like-png.png'},
+      { id: 3, isLoggedIn: false, username: undefined, avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAMHO5MPBu6ztKy20_DfCT6fMTtZFZ2MfO0AuhumDliiYPUXUE&'}
     ]
   })
 };
@@ -53,18 +46,5 @@ export default {
   flex-wrap: wrap;
   flex: 1;
   margin-top: 128px;
-}
-
-.user {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 200px;
-  margin-bottom: 8px;
-}
-
-.avatar {
-  width: 128px;
-  margin-bottom: 8px;
 }
 </style>
