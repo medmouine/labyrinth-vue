@@ -1,4 +1,5 @@
 <template>
+  <span></span>
 </template>
 <script>
 import DIRECTIONS from '@/model/game/directions';

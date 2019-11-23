@@ -15,6 +15,13 @@
         <LobbyPlayer v-else v-bind:player="player" v-bind:isCurrent="false" />
       </div>
     </div>
+    <div class="buttons">
+      <button class="begin">Commencer</button>
+      <select class="select">
+        <option value="beginner">Débutant</option>
+        <option value="advanced">Avancé</option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -52,7 +59,40 @@ export default {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  flex: 1;
   margin-top: 128px;
+}
+
+.begin {
+  color: #fff;
+  text-decoration: none;
+  background: #639;
+  padding: 16px;
+  border-radius: 4px;
+  display: inline-block;
+  border: none;
+  font-size: 100%;
+  transition: all 0.4s ease 0s;
+  font-weight: bold;
+  margin-right: 32px;
+}
+.begin:hover {
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
+  box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);
+  transition: all 0.4s ease 0s;
+}
+.buttons{
+  margin-top: 32px;
+}
+.select{
+  color: #fff;
+  text-decoration: none;
+  background: #fb3;
+  padding: 16px;
+  border-radius: 4px;
+  display: inline-block;
+  border: none;
+  font-size: 100%;
+  transition: all 0.4s ease 0s;
+  margin-right: 32px;
 }
 </style>
