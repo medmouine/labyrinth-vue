@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="buttons">
-      <button :disabled="players.filter( p => !!p.username && p.username !== '').length > 1" class="begin">Commencer</button>
+      <button @click="handleClick" class="begin">Commencer</button>
       <p v-if="players.filter( p => !!p.username && p.username !== '').length <= 1">Two or more players need to be connected and set a username to start</p>
       <select class="select">
         <option value="beginner">Débutant</option>
@@ -29,6 +29,7 @@
 <script>
 import LobbyPlayer from '@/components/LobbyPlayer';
 import db from '@/database/db';
+import router from "../router";
 export default {
   name: 'Home',
   components: {
@@ -39,6 +40,11 @@ export default {
   }),
   firestore: {
     players: db.collection('players')
+  },
+  methods: {
+    handleClick() {
+      router.push('/maze')
+    }
   }
 };
 </script>
