@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import authentication from './authentication/module';
 import user from './user/module';
 import maze from './maze/module';
+import game from './game/module';
 
 Vue.use(Vuex);
 
@@ -11,5 +12,5 @@ export default new Vuex.Store({
   getters: {},
   mutations: {},
   actions: {},
-  modules: { authentication, user, maze }
+  modules: { authentication, user, maze, game }
 });

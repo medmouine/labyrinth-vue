@@ -1,6 +1,7 @@
 <template>
   <div id="maze">
     <div v-if="this.mazeIsLoaded" id="maze-wrapper">
+      <KeyBoardDirectionListener v-bind:on-direction-press="(direction) => this.move({playerId: currentPlayer.id, direction: direction})"/>
       <div v-bind:key="row.index" class="row" v-for="row in maze.grid">
         <div
                 class="cell"
@@ -56,17 +57,21 @@
 
 <script>
   import {mapActions, mapGetters} from 'vuex';
+  import KeyBoardDirectionListener from "../KeyBoardDirectionListener";
 
   export default {
     name: 'Maze',
+    components: {KeyBoardDirectionListener},
     computed: {
-      ...mapGetters('maze', ['maze', 'mazeIsLoaded', 'players', 'numberOfPlayers'])
+      ...mapGetters('maze', ['maze', 'mazeIsLoaded']),
+      ...mapGetters('game', ['players', 'numberOfPlayers', 'currentPlayer'])
     },
     methods: {
       ...mapActions('maze', ['initMaze']),
+      ...mapActions('game', ['move']),
       countPlayersInCell(cell, allPlayers) {
         return allPlayers.filter( p => p.position.x === cell.row && p.position.y === cell.column).length
-      }
+      },
     },
     async created() {
       this.initMaze();
