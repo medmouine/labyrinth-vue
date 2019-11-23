@@ -8,11 +8,9 @@
     <div class="users">
       <div v-for="(player, index) of players" v-bind:key="index">
         <LobbyPlayer
-          v-if="index === 0"
           v-bind:player="player"
-          v-bind:isCurrent="true"
+          v-bind:isCurrent="isCurrentPlayer(player)"
         />
-        <LobbyPlayer v-else v-bind:player="player" v-bind:isCurrent="false" />
       </div>
     </div>
     <div class="buttons">
@@ -39,6 +37,11 @@ export default {
   firestore: {
     players: db.collection('players')
   },
+  methods: {
+    isCurrentPlayer: player => {
+      return player.id === `player${localStorage.getItem('currentPlayerId')}`;
+    }
+  },
   mounted: async () => {
     if (!localStorage.getItem('currentPlayerId')) {
       const querySnapshot = await db.collection('players').get();
@@ -46,8 +49,6 @@ export default {
         .find(p => !p.data().isLoggedIn)
         .data();
       const currentPlayerId = currentPlayer.id;
-
-      console.log(currentPlayer, { ...currentPlayer, isLoggedIn: true });
 
       db.collection('players')
         .doc(`player${currentPlayerId}`)
